@@ -3,6 +3,7 @@ package com.joaco.logintest.service;
 import com.joaco.logintest.entity.Usuario;
 import com.joaco.logintest.repository.UsuarioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -26,6 +27,7 @@ public class UsuarioService {
     }
 
     public Usuario save(Usuario usuario) {
+        usuario.setPassword(new BCryptPasswordEncoder().encode(usuario.getPassword()));
         return usuarioRepository.save(usuario);
     }
 
