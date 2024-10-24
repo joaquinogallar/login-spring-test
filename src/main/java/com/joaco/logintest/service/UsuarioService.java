@@ -2,8 +2,7 @@ package com.joaco.logintest.service;
 
 import com.joaco.logintest.entity.Usuario;
 import com.joaco.logintest.repository.UsuarioRepository;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -11,13 +10,15 @@ import java.util.List;
 @Service
 public class UsuarioService {
 
-    private UsuarioRepository usuarioRepository;
+    private final UsuarioRepository usuarioRepository;
+    private final PasswordEncoder passwordEncoder;
 
-    public UsuarioService(UsuarioRepository usuarioRepository) {
+    public UsuarioService(UsuarioRepository usuarioRepository, PasswordEncoder passwordEncoder) {
         this.usuarioRepository = usuarioRepository;
+        this.passwordEncoder = passwordEncoder;
     }
 
-    // metodos
+    // métodos
     public List<Usuario> findAll() {
         return usuarioRepository.findAll();
     }
@@ -27,7 +28,7 @@ public class UsuarioService {
     }
 
     public Usuario save(Usuario usuario) {
-        usuario.setPassword(new BCryptPasswordEncoder().encode(usuario.getPassword()));
+        usuario.setPassword(passwordEncoder.encode(usuario.getPassword()));
         return usuarioRepository.save(usuario);
     }
 
